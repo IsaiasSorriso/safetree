@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Floresta Sustentável 🌳</title>
+  <title>Safe Tree 🌳</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 
@@ -45,6 +45,19 @@
       font-size: 1.8rem;
       letter-spacing: 0.5px;
     }
+
+    .title{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;  
+      }
+
+    .logo img{
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+      }
 
     .menu-toggle {
       display: none;
@@ -196,12 +209,21 @@
       section {
         max-width: 90%;
       }
+      
     }
   </style>
 </head>
 <body>
   <header id="header">
-    <h1>Floresta Sustentável 🌳</h1>
+    
+    
+    <div class="title">
+      <div class="logo"><img src="logo.png" alt=""></div>
+      <h1>Safe Tree</h1>
+      
+    </div>
+    
+
     <div class="menu-toggle" id="menuToggle">☰</div>
     <nav>
       <ul id="menuList">
