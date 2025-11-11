@@ -173,7 +173,7 @@
     }
 
     .hidden {
-      display: none;
+      display: none !important;
     }
 
     footer {
@@ -209,7 +209,65 @@
       section {
         max-width: 90%;
       }
-      
+
+
+    }
+
+    /* Estilos para o módulo */
+    #modulos {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      max-width: 90%;
+      width: 90%;
+    }
+
+    #modulos .detalhes {
+      flex: 1;
+      border-right: 1px solid #ccc;
+      padding-right: 20px;
+    }
+
+    #modulos .detalhes ul li {
+      text-align: left;
+    }
+
+    #modulos .conteudo {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-left: 20px;
+    }
+
+    #modulos .conteudo img {
+      width: 100%;
+      max-width: 300px;
+      height: auto;
+      margin-bottom: 1rem;
+    }
+
+    #modulos .conteudo p {
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      #modulos {
+        flex-direction: column;
+        max-width: 90%;
+      }
+
+      #modulos .detalhes {
+        border-right: none;
+        border-bottom: 1px solid #ccc;
+        padding-right: 0;
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+      }
+
+      #modulos .conteudo {
+        padding-left: 0;
+      }
     }
   </style>
 </head>
@@ -229,7 +287,7 @@
       <ul id="menuList">
         <li><a href="#" onclick="abrirTela('inicio')">Início</a></li>
         <li><a href="#" onclick="abrirTela('login')">Login</a></li>
-        <li><a href="#" onclick="abrirTela('cadastro')">Cadastro</a></li>
+        <li><a href="#" onclick="abrirTela('modulos')">Módulos</a></li>
       </ul>
     </nav>
   </header>
@@ -264,18 +322,48 @@
         <option>Vendedor</option>
         <option>Usuário</option>
       </select>
-      <button class="btn-sec">Cadastrar</button>
-      <button class="btn" onclick="abrirTela('login')">Já tenho conta</button>
+      <button class="btn">Cadastrar</button>
+      <button class="btn-sec" onclick="abrirTela('login')">Já tenho conta</button>
     </section>
 
     <!-- Painel do Vendedor -->
     <section id="vendedor" class="hidden">
       <h2>Painel do Vendedor</h2>
       <button class="btn-sec" onclick="abrirTela('cadastroArvore')">Cadastrar Árvore</button>
+      <button class="btn-sec" onclick="abrirTela('modulos')">Módulos</button>
       <h2>Minhas Árvores</h2>
-      <p>🌱 Ipê Amarelo — 10 unidades — 50 kg — R$ 800</p>
-      <p>🌳 Araucária — 5 unidades — 40 kg — R$ 600</p>
+      <p>🌱 Ipê Amarelo | 10 unidades | 50 kg | R$ 800</p>
+      <p>🌳 Araucária | 5 unidades | 40 kg | R$ 600</p>
       <button class="btn" onclick="abrirTela('inicio')">Sair</button>
+    </section>
+
+    <section id="modulos" class="hidden">
+      <div class="detalhes">
+        <h1>Módulo 1</h1>
+        <ul>
+          <li>
+            <h2>Data do Plantio:</h2>
+            <p>15/01/2016</p>
+          </li>
+          <li>
+            <h2>Área</h2>
+            <p>10 Hectares</p>
+          </li>
+          <li>
+            <h2>Árvores Plantadas</h2>
+            <p>6.400</p>
+          </li>
+          <li>
+            <h2>CAP TABLE</h2>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque ipsa omnis at ut ullam non odit quisquam, error eveniet repellat tenetur illo deserunt saepe, reprehenderit nisi rem iste quod aspernatur.</p>
+          </li>
+        </ul>
+      </div>
+      <div class="conteudo">
+        <img src="image.png" alt="">
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus, dolorum eum nostrum explicabo impedit excepturi temporibus quidem dolores, blanditiis autem laudantium deleniti? Alias odit excepturi qui! Laboriosam unde fugit laudantium.</p>
+      </div>
+
     </section>
 
     <!-- Cadastro de Árvore -->
@@ -349,32 +437,47 @@
   </footer>
 
   <script>
-    const menuToggle = document.getElementById("menuToggle");
-    const menuList = document.getElementById("menuList");
-    const header = document.getElementById("header");
+  const menuToggle = document.getElementById("menuToggle");
+  const menuList = document.getElementById("menuList");
+  const header = document.getElementById("header");
 
-    menuToggle.addEventListener("click", () => {
-      menuList.classList.toggle("active");
-    });
+  // Toggle do menu (mobile)
+  menuToggle.addEventListener("click", () => {
+    menuList.classList.toggle("active");
+    const expanded = menuList.classList.contains("active");
+    menuToggle.setAttribute("aria-expanded", expanded);
+  });
 
-    function abrirTela(id) {
-      document.querySelectorAll("section").forEach(sec => sec.classList.add("hidden"));
-      document.getElementById(id).classList.remove("hidden");
+  function abrirTela(id) {
+    // esconde todas as sections e mostra apenas a desejada
+    document.querySelectorAll("section").forEach(sec => sec.classList.add("hidden"));
+    const target = document.getElementById(id);
+    if (target) target.classList.remove("hidden");
 
-      // Esconde navbar apenas na tela inicial
-      if (id === "inicio") {
-        menuList.style.display = "none";
-      } else {
-        menuList.style.display = "flex";
-      }
+    // fechar menu mobile automaticamente quando trocar de tela
+    menuList.classList.remove("active");
+    menuToggle.setAttribute("aria-expanded", "false");
 
-      window.scrollTo({ top: 0, behavior: "smooth" });
+    // no desktop a nav está sempre visível via CSS, então não mexemos em style.display
+    // se a tela for a inicial, queremos que o menu esteja fechado por padrão (CSS/CSS media query cuida disso)
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  // Ao carregar, inicia na tela de início sem navbar ativa no mobile
+  window.addEventListener("load", () => {
+    abrirTela("inicio");
+    menuList.classList.remove("active");
+    menuToggle.setAttribute("aria-expanded", "false");
+  });
+
+  // Fechar menu ao redimensionar para desktop (para evitar o menu mobile aberto ficando visível)
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 768) {
+      menuList.classList.remove("active");
+      menuToggle.setAttribute("aria-expanded", "false");
     }
+  });
+</script>
 
-    // Ao carregar, inicia na tela de início sem navbar
-    window.onload = () => {
-      abrirTela("inicio");
-    };
-  </script>
 </body>
 </html>
