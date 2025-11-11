@@ -40,7 +40,6 @@ Com ela, é possível:
 ---
 
 ## 🧱 Estrutura do Projeto
-/
 ├── index.html # Página principal (todo o projeto está contido aqui)
 ├── logo.png # Logotipo da Safe Tree (exemplo)
 ├── image.png # Imagem ilustrativa usada nos módulos
@@ -101,21 +100,13 @@ Paleta de cores:
 
 ---
 
-## 🧠 Melhorias Futuras (Sugestões)
+## 🧠 Melhorias Futuras 
 
 - Implementar autenticação real (com backend).
 - Conectar ao banco de dados para cadastro de árvores e usuários.
 - Integração real com XRPL e geração de tokens.
 - Módulo de leitura real de QR Code via câmera.
 - Dashboard de estatísticas ambientais.
-
----
-
-## 👨‍💻 Autor
-
-**Isaias Souza**  
-Desenvolvedor Full Stack | Estudante | Entusiasta em tecnologia sustentável 🌱  
-💬 [GitHub](https://github.com/) • [LinkedIn](https://www.linkedin.com/)
 
 ---
 
