@@ -166,6 +166,7 @@
       padding: 0.9rem;
       border: none;
       border-radius: 10px;
+      margin: 10px 0;
     }
 
     .btn-sec:hover {
@@ -295,8 +296,8 @@
   <main>
     <!-- Tela inicial -->
     <section id="inicio">
-      <h2>Escolha o tipo de acesso</h2>
-      <p>Selecione se você é um vendedor ou um comprador para continuar.</p>
+      <h2>A SAFE TREE veio para revolucionar</h2>
+      <p>Somos a plataforma que transforma a árvore individual em um Ativo Digital Rastreável (RWA).<br><br>O nosso ativo é o SAFET TOKEN.<br><br>1 token SAFET = 1 árvore plantada e geolocalizada.<br><br>O SAFET carrega o Proof of tree e a auditoria de sequestro de CO2, tudo imutável na XRPL, garantindo certificação infraudável.</p>
       <button class="btn" onclick="abrirTela('vendedor')">Sou Vendedor</button>
       <button class="btn" onclick="abrirTela('usuario')">Sou Usuário</button>
     </section>
@@ -401,19 +402,40 @@
       <p>💰 Preço: R$ 80,00</p>
       <p>⚖️ Peso: 5 kg</p>
       <p>📦 Quantidade: 10</p>
-      <button class="btn-sec" onclick="abrirTela('pagamento')">Comprar</button>
+      <button class="btn-sec" onclick="abrirTela('escolhaMoeda')">Comprar</button>
       <button class="btn" onclick="abrirTela('usuario')">Voltar</button>
     </section>
 
-    <!-- Pagamento -->
-    <section id="pagamento" class="hidden">
-      <h2>Pagamento</h2>
-      <input type="text" placeholder="Número do Cartão" />
-      <input type="text" placeholder="Nome no Cartão" />
-      <input type="text" placeholder="Validade (MM/AA)" />
-      <input type="text" placeholder="CVV" />
-      <button class="btn-sec" onclick="abrirTela('checkout')">Pagar</button>
+    <!-- Escolha da Moeda -->
+    <section id="escolhaMoeda" class="hidden">
+      <h2>Escolha a Moeda</h2>
+      <p>Selecione a moeda para o pagamento:</p>
+      <select id="moedaSelect">
+        <option value="BRL">BRL</option>
+        <option value="USDT">USDT</option>
+        <option value="SAFET">SAFET</option>
+      </select>
+      <button class="btn-sec" onclick="armazenarMoeda(); abrirTela('quantidade')">Próximo</button>
       <button class="btn" onclick="abrirTela('detalhesLote')">Voltar</button>
+    </section>
+
+    <!-- Quantidade da Moeda -->
+    <section id="quantidade" class="hidden">
+      <h2>Quantidade da Moeda</h2>
+      <p>Insira a quantidade da moeda selecionada:</p>
+      <input type="number" id="quantidadeInput" placeholder="Quantidade" />
+      <button class="btn-sec" onclick="armazenarQuantidade(); abrirTela('pagamentoPix')">Próximo</button>
+      <button class="btn" onclick="abrirTela('escolhaMoeda')">Voltar</button>
+    </section>
+
+    <!-- Pagamento com Pix -->
+    <section id="pagamentoPix" class="hidden">
+      <h2>Pagamento com Pix</h2>
+      <p>Simulação de pagamento com Pix.</p>
+      <p>Moeda: <span id="moedaEscolhida"></span></p>
+      <p>Quantidade: <span id="quantidadeEscolhida"></span></p>
+      <button class="btn-sec" onclick="abrirTela('finalizado')">Pagar com Pix</button>
+      <button class="btn" onclick="abrirTela('quantidade')">Voltar</button>
     </section>
 
     <!-- Checkout -->
@@ -441,6 +463,9 @@
   const menuList = document.getElementById("menuList");
   const header = document.getElementById("header");
 
+  let moedaSelecionada = '';
+  let quantidadeSelecionada = '';
+
   // Toggle do menu (mobile)
   menuToggle.addEventListener("click", () => {
     menuList.classList.toggle("active");
@@ -454,6 +479,12 @@
     const target = document.getElementById(id);
     if (target) target.classList.remove("hidden");
 
+    // Atualizar displays se for a tela de pagamento Pix
+    if (id === 'pagamentoPix') {
+      document.getElementById('moedaEscolhida').textContent = moedaSelecionada;
+      document.getElementById('quantidadeEscolhida').textContent = quantidadeSelecionada;
+    }
+
     // fechar menu mobile automaticamente quando trocar de tela
     menuList.classList.remove("active");
     menuToggle.setAttribute("aria-expanded", "false");
@@ -461,6 +492,16 @@
     // no desktop a nav está sempre visível via CSS, então não mexemos em style.display
     // se a tela for a inicial, queremos que o menu esteja fechado por padrão (CSS/CSS media query cuida disso)
     window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  // Função para armazenar moeda selecionada
+  function armazenarMoeda() {
+    moedaSelecionada = document.getElementById('moedaSelect').value;
+  }
+
+  // Função para armazenar quantidade
+  function armazenarQuantidade() {
+    quantidadeSelecionada = document.getElementById('quantidadeInput').value;
   }
 
   // Ao carregar, inicia na tela de início sem navbar ativa no mobile
